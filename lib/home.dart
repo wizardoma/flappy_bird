@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
           _bestScore = _score;
         }
       });
-      if (_birdYaxis > 1) {
+      if (_birdYaxis > 1.1) {
         _resetGame(timer);
       }
     });
@@ -45,17 +45,20 @@ class _HomePageState extends State<HomePage> {
 
   void _resetGame(Timer timer) {
     timer.cancel();
+
+    setState(() {
+      _score = 0;
+      time = 0;
+      height = 0;
+      isGameStarted = false;
+      _birdYaxis = 0;
+      initialHeight = 0;
+    });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Game is over"),
       ),
     );
-    setState(() {
-      _score = 0;
-      isGameStarted = false;
-      _birdYaxis = 0;
-      initialHeight = 0;
-    });
   }
 
   @override
@@ -81,6 +84,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          Container(height: 10, color: Colors.red,),
           Expanded(
               child: DefaultTextStyle(
             style: TextStyle(
@@ -89,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               fontWeight: FontWeight.bold,
             ),
             child: Container(
-              color: Colors.green,
+              color: Colors.black87,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
