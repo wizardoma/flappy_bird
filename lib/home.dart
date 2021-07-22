@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flappy_bird/bird.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +13,8 @@ class _HomePageState extends State<HomePage> {
   static double _birdYaxis = 0;
   double time = 0;
   double height = 0;
+  int _score = 0;
+  int _bestScore = 0;
   double initialHeight = _birdYaxis;
   bool isGameStarted = false;
 
@@ -30,13 +32,30 @@ class _HomePageState extends State<HomePage> {
       height = -4.9 * time * time + 2.8 * time;
       setState(() {
         _birdYaxis = initialHeight - height;
+        _score = (_score + 0.1).ceil();
+        if (_score > _bestScore) {
+          _bestScore = _score;
+        }
       });
       if (_birdYaxis > 1) {
-        timer.cancel();
-        isGameStarted = true;
+        _resetGame(timer);
       }
     });
+  }
 
+  void _resetGame(Timer timer) {
+    timer.cancel();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Game is over"),
+      ),
+    );
+    setState(() {
+      _score = 0;
+      isGameStarted = false;
+      _birdYaxis = 0;
+      initialHeight = 0;
+    });
   }
 
   @override
@@ -63,8 +82,41 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-              child: Container(
-            color: Colors.green,
+              child: DefaultTextStyle(
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            child: Container(
+              color: Colors.green,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("SCORE"),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(_score.toString()),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("BEST"),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(_bestScore.toString()),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ))
         ],
       ),
