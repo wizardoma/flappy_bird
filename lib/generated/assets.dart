@@ -4,6 +4,7 @@ class Assets {
 
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String imagesBird = 'lib/images/bird.png';
+  static const String libBarriers = 'lib/barriers.dart';
   static const String libBird = 'lib/bird.dart';
   static const String libHome = 'lib/home.dart';
   static const String libMain = 'lib/main.dart';
