@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flappy_bird/bird.dart';
@@ -10,6 +11,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double _birdYaxis = 0;
+  double time = 0;
+  double height = 0;
+  double initialHeight = 0;
+
+  void _jump() {
+    initialHeight = _birdYaxis;
+    Timer.periodic(Duration(milliseconds: 50), (timer) {
+      time += 0.04;
+      height = -4.9 * time * time + 2.8 * time;
+      setState(() {
+        if (((initialHeight - height) >= -1) && ((initialHeight - height) <= 1)){
+        _birdYaxis = initialHeight - height; }
+        else {
+          _birdYaxis = 0;
+        }
+
+      });
+    });
+  
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +59,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _jump() async {
-    setState(() {
-      _birdYaxis = -0.8;
-    });
-    Future.delayed(
-        Duration(milliseconds: 200),
-        () => setState(() {
-              _birdYaxis = 0;
-            }));
-  }
 }
